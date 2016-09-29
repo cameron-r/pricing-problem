@@ -1,6 +1,7 @@
 package logic;
 
 import models.Order;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -11,13 +12,18 @@ import static org.junit.Assert.assertTrue;
 
 public class MarkupCalculatorTest {
 
-    private static final BigDecimal ORIGINAL_COST = new BigDecimal("100");
+    private static final BigDecimal ONE_HUNDRED = new BigDecimal("100");
+    private MarkupCalculator markupCalculator;
+
+    @Before
+    public void setUp() throws Exception {
+        markupCalculator = new MarkupCalculator();
+    }
 
     @Test
     public void shouldCalculateFivePercentBaseMarkupForNormalItem() {
-        Order normalOrder = new Order(ORIGINAL_COST, 0);
+        Order normalOrder = new Order(ONE_HUNDRED, 0, false);
 
-        MarkupCalculator markupCalculator = new MarkupCalculator();
         BigDecimal markUpAmount = markupCalculator.calculateMarkupFor(normalOrder);
 
         assertTrue(markUpAmount.compareTo(new BigDecimal("5")) == 0);
@@ -25,11 +31,19 @@ public class MarkupCalculatorTest {
 
     @Test
     public void shouldAddOnePointTwoPercentMarkupPerWorker() {
-        Order orderWithOneWorker = new Order(ORIGINAL_COST, 1);
+        Order orderWithOneWorker = new Order(ONE_HUNDRED, 1, false);
 
-        MarkupCalculator markupCalculator = new MarkupCalculator();
-        BigDecimal markedUpPrice = markupCalculator.calculateMarkupFor(orderWithOneWorker);
+        BigDecimal markUpAmount = markupCalculator.calculateMarkupFor(orderWithOneWorker);
 
-        assertTrue(markedUpPrice.compareTo(new BigDecimal("6.2")) == 0);
+        assertTrue(markUpAmount.compareTo(new BigDecimal("6.2")) == 0);
+    }
+
+    @Test
+    public void shouldAddSevenPointFivePercentMarkupForPharmaceuticals() {
+        Order orderWithPharmaceuticals = new Order(ONE_HUNDRED, 0, true);
+
+        BigDecimal markUpAmount = markupCalculator.calculateMarkupFor(orderWithPharmaceuticals);
+
+        assertTrue(markUpAmount.compareTo(new BigDecimal("12.5")) == 0);
     }
 }
