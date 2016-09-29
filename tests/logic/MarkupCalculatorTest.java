@@ -22,7 +22,7 @@ public class MarkupCalculatorTest {
 
     @Test
     public void shouldCalculateFivePercentBaseMarkupForNormalItem() {
-        Order normalOrder = new Order(ONE_HUNDRED, 0, false);
+        Order normalOrder = new Order(ONE_HUNDRED, 0, false, false);
 
         BigDecimal markUpAmount = markupCalculator.calculateMarkupFor(normalOrder);
 
@@ -31,7 +31,7 @@ public class MarkupCalculatorTest {
 
     @Test
     public void shouldAddOnePointTwoPercentMarkupPerWorker() {
-        Order orderWithOneWorker = new Order(ONE_HUNDRED, 1, false);
+        Order orderWithOneWorker = new Order(ONE_HUNDRED, 1, false, false);
 
         BigDecimal markUpAmount = markupCalculator.calculateMarkupFor(orderWithOneWorker);
 
@@ -40,10 +40,19 @@ public class MarkupCalculatorTest {
 
     @Test
     public void shouldAddSevenPointFivePercentMarkupForPharmaceuticals() {
-        Order orderWithPharmaceuticals = new Order(ONE_HUNDRED, 0, true);
+        Order orderWithPharmaceuticals = new Order(ONE_HUNDRED, 0, true, false);
 
         BigDecimal markUpAmount = markupCalculator.calculateMarkupFor(orderWithPharmaceuticals);
 
         assertTrue(markUpAmount.compareTo(new BigDecimal("12.5")) == 0);
+    }
+
+    @Test
+    public void shouldAddThirteenPercentMarkupForFood() {
+        Order orderWithFood = new Order(ONE_HUNDRED, 0, false, true);
+
+        BigDecimal markUpAmount = markupCalculator.calculateMarkupFor(orderWithFood);
+
+        assertTrue(markUpAmount.compareTo(new BigDecimal("18")) == 0);
     }
 }
