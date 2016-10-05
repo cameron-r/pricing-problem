@@ -6,13 +6,11 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 public class MarkupCalculatorTest {
 
-    private static final BigDecimal ONE_HUNDRED = new BigDecimal("100");
+    private static final BigDecimal INITIAL_AMOUNT = new BigDecimal("100");
     private MarkupCalculator markupCalculator;
 
     @Before
@@ -22,46 +20,53 @@ public class MarkupCalculatorTest {
 
     @Test
     public void shouldCalculateFivePercentBaseMarkupForNormalItem() {
-        Order normalOrder = new Order(ONE_HUNDRED, 0, false, false, false);
+        Order normalOrder = new Order(INITIAL_AMOUNT, 0, false, false, false);
 
-        BigDecimal markUpAmount = markupCalculator.calculateMarkupFor(normalOrder);
+        BigDecimal markedUpAmount = markupCalculator.calculateMarkupFor(normalOrder);
 
-        assertTrue(markUpAmount.compareTo(new BigDecimal("5")) == 0);
+        assertMarkupOf("0.05", INITIAL_AMOUNT, markedUpAmount);
     }
 
     @Test
     public void shouldAddOnePointTwoPercentMarkupPerWorker() {
-        Order orderWithOneWorker = new Order(ONE_HUNDRED, 1, false, false, false);
+        Order orderWithOneWorker = new Order(INITIAL_AMOUNT, 1, false, false, false);
 
-        BigDecimal markUpAmount = markupCalculator.calculateMarkupFor(orderWithOneWorker);
+        BigDecimal markedUpAmount = markupCalculator.calculateMarkupFor(orderWithOneWorker);
 
-        assertTrue(markUpAmount.compareTo(new BigDecimal("6.2")) == 0);
+        assertMarkupOf("0.062", INITIAL_AMOUNT, markedUpAmount);
     }
 
     @Test
     public void shouldAddSevenPointFivePercentMarkupForPharmaceuticals() {
-        Order orderWithPharmaceuticals = new Order(ONE_HUNDRED, 0, true, false, false);
+        Order orderWithPharmaceuticals = new Order(INITIAL_AMOUNT, 0, true, false, false);
 
-        BigDecimal markUpAmount = markupCalculator.calculateMarkupFor(orderWithPharmaceuticals);
+        BigDecimal markedUpAmount = markupCalculator.calculateMarkupFor(orderWithPharmaceuticals);
 
-        assertTrue(markUpAmount.compareTo(new BigDecimal("12.5")) == 0);
+        assertMarkupOf("0.125", INITIAL_AMOUNT, markedUpAmount);
     }
 
     @Test
     public void shouldAddThirteenPercentMarkupForFood() {
-        Order orderWithFood = new Order(ONE_HUNDRED, 0, false, true, false);
+        Order orderWithFood = new Order(INITIAL_AMOUNT, 0, false, true, false);
 
-        BigDecimal markUpAmount = markupCalculator.calculateMarkupFor(orderWithFood);
+        BigDecimal markedUpAmount = markupCalculator.calculateMarkupFor(orderWithFood);
 
-        assertTrue(markUpAmount.compareTo(new BigDecimal("18")) == 0);
+        assertMarkupOf("0.18", INITIAL_AMOUNT, markedUpAmount);
     }
 
     @Test
     public void shouldAddTwoPercentMarkupForElectronics() {
-        Order orderWithElectronics = new Order(ONE_HUNDRED, 0, false, false, true);
+        Order orderWithElectronics = new Order(INITIAL_AMOUNT, 0, false, false, true);
 
-        BigDecimal markUpAmount = markupCalculator.calculateMarkupFor(orderWithElectronics);
+        BigDecimal markedUpAmount = markupCalculator.calculateMarkupFor(orderWithElectronics);
 
-        assertTrue(markUpAmount.compareTo(new BigDecimal("7")) == 0);
+        assertMarkupOf("0.07", INITIAL_AMOUNT, markedUpAmount);
+    }
+
+    private void assertMarkupOf(String expectedMarkupPercent, BigDecimal initialAmount, BigDecimal markedUpAmount) {
+        BigDecimal actualMarkupPercent = markedUpAmount.divide(initialAmount);
+
+        assertTrue(String.format("Expected markup of %s but got markup of %s", expectedMarkupPercent, actualMarkupPercent),
+                new BigDecimal(expectedMarkupPercent).compareTo(actualMarkupPercent) == 0);
     }
 }
