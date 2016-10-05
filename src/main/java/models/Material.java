@@ -10,7 +10,7 @@ public enum Material {
     private final List<String> values;
 
     Material(String... values) {
-        this.values = new ArrayList<>(Arrays.asList(values));
+        this.values = new ArrayList<String>(Arrays.asList(values));
     }
 
     public boolean contains(String material) {
