@@ -20,7 +20,7 @@ public class MarkupCalculatorTest {
 
     @Test
     public void shouldCalculateFivePercentBaseMarkupForNormalItem() {
-        Order normalOrder = new Order(INITIAL_AMOUNT, 0, false, false, false);
+        Order normalOrder = new Order(INITIAL_AMOUNT, 0, "boxes");
 
         BigDecimal markedUpAmount = markupCalculator.calculateMarkedUpCostFor(normalOrder);
 
@@ -29,7 +29,7 @@ public class MarkupCalculatorTest {
 
     @Test
     public void shouldAddOnePointTwoPercentMarkupPerWorker() {
-        Order orderWithOneWorker = new Order(INITIAL_AMOUNT, 1, false, false, false);
+        Order orderWithOneWorker = new Order(INITIAL_AMOUNT, 1, "boxes");
 
         BigDecimal markedUpAmount = markupCalculator.calculateMarkedUpCostFor(orderWithOneWorker);
 
@@ -38,7 +38,7 @@ public class MarkupCalculatorTest {
 
     @Test
     public void shouldAddSevenPointFivePercentMarkupForPharmaceuticals() {
-        Order orderWithPharmaceuticals = new Order(INITIAL_AMOUNT, 0, true, false, false);
+        Order orderWithPharmaceuticals = new Order(INITIAL_AMOUNT, 0, "drugs");
 
         BigDecimal markedUpAmount = markupCalculator.calculateMarkedUpCostFor(orderWithPharmaceuticals);
 
@@ -47,7 +47,7 @@ public class MarkupCalculatorTest {
 
     @Test
     public void shouldAddThirteenPercentMarkupForFood() {
-        Order orderWithFood = new Order(INITIAL_AMOUNT, 0, false, true, false);
+        Order orderWithFood = new Order(INITIAL_AMOUNT, 0, "food");
 
         BigDecimal markedUpAmount = markupCalculator.calculateMarkedUpCostFor(orderWithFood);
 
@@ -56,7 +56,7 @@ public class MarkupCalculatorTest {
 
     @Test
     public void shouldAddTwoPercentMarkupForElectronics() {
-        Order orderWithElectronics = new Order(INITIAL_AMOUNT, 0, false, false, true);
+        Order orderWithElectronics = new Order(INITIAL_AMOUNT, 0, "electronics");
 
         BigDecimal markedUpAmount = markupCalculator.calculateMarkedUpCostFor(orderWithElectronics);
 

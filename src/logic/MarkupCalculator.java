@@ -1,5 +1,6 @@
 package logic;
 
+import models.Material;
 import models.Order;
 
 import java.math.BigDecimal;
@@ -13,14 +14,23 @@ public class MarkupCalculator {
 
     public BigDecimal calculateMarkedUpCostFor(Order order) {
         BigDecimal workerMarkup = MARKUP_PER_WORKER.multiply(new BigDecimal(order.numWorkers));
-        BigDecimal pharmaceuticalMarkup = order.isPharmaceutical? PHARMACEUTICAL_MARKUP : BigDecimal.ZERO;
-        BigDecimal foodMarkup = order.isFood? FOOD_MARKUP : BigDecimal.ZERO;
-        BigDecimal electronicMarkup = order.isElectronic? ELECTRONIC_MARKUP : BigDecimal.ZERO;
+        BigDecimal materialMarkup = calculateMaterialMarkup(order.materialType);
 
-        BigDecimal totalMarkup = BASE_MARKUP.add(workerMarkup)
-                .add(pharmaceuticalMarkup)
-                .add(foodMarkup)
-                .add(electronicMarkup);
+        BigDecimal totalMarkup = BASE_MARKUP.add(workerMarkup).add(materialMarkup);
         return order.initialPrice.add(order.initialPrice.multiply(totalMarkup));
+    }
+
+    private BigDecimal calculateMaterialMarkup(String materialType) {
+        if (Material.PHARMACEUTICALS.contains(materialType)) {
+            return PHARMACEUTICAL_MARKUP;
+        }
+        else if (Material.FOOD.contains(materialType)) {
+            return FOOD_MARKUP;
+        }
+        else if (Material.ELECTRONICS.contains(materialType)) {
+            return ELECTRONIC_MARKUP;
+        }
+
+        return BigDecimal.ZERO;
     }
 }
