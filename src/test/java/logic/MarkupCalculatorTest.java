@@ -33,6 +33,26 @@ public class MarkupCalculatorTest {
     }
 
     @Test
+    public void shouldCalculateCorrectMarkedUpAmountForNulogyExample2() {
+        Order order = new Order(new BigDecimal("12456.95"), 4, "books");
+
+        BigDecimal markedUpAmount = markupCalculator.calculateMarkedUpCostFor(order);
+
+        BigDecimal expectedAmount = new BigDecimal("13707.63");
+        assertThat(markedUpAmount.compareTo(expectedAmount), is(0));
+    }
+
+    @Test
+    public void shouldCalculateCorrectMarkedUpAmountForNulogyExample3() {
+        Order order = new Order(new BigDecimal("5432.00"), 1, "drugs");
+
+        BigDecimal markedUpAmount = markupCalculator.calculateMarkedUpCostFor(order);
+
+        BigDecimal expectedAmount = new BigDecimal("6199.81");
+        assertThat(markedUpAmount.compareTo(expectedAmount), is(0));
+    }
+
+    @Test
     public void shouldCalculateFivePercentBaseMarkupForNormalItem() {
         Order normalOrder = new Order(INITIAL_AMOUNT, 0, "boxes");
 
