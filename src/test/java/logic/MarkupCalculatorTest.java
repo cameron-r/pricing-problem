@@ -23,36 +23,6 @@ public class MarkupCalculatorTest {
     }
 
     @Test
-    public void shouldCalculateCorrectMarkedUpAmountForNulogyExample1() {
-        Order order = new Order(new BigDecimal("1299.99"), 3, "food");
-
-        BigDecimal markedUpAmount = markupCalculator.calculateMarkedUpCostFor(order);
-
-        BigDecimal expectedAmount = new BigDecimal("1591.58");
-        assertThat(markedUpAmount.compareTo(expectedAmount), is(0));
-    }
-
-    @Test
-    public void shouldCalculateCorrectMarkedUpAmountForNulogyExample2() {
-        Order order = new Order(new BigDecimal("12456.95"), 4, "books");
-
-        BigDecimal markedUpAmount = markupCalculator.calculateMarkedUpCostFor(order);
-
-        BigDecimal expectedAmount = new BigDecimal("13707.63");
-        assertThat(markedUpAmount.compareTo(expectedAmount), is(0));
-    }
-
-    @Test
-    public void shouldCalculateCorrectMarkedUpAmountForNulogyExample3() {
-        Order order = new Order(new BigDecimal("5432.00"), 1, "drugs");
-
-        BigDecimal markedUpAmount = markupCalculator.calculateMarkedUpCostFor(order);
-
-        BigDecimal expectedAmount = new BigDecimal("6199.81");
-        assertThat(markedUpAmount.compareTo(expectedAmount), is(0));
-    }
-
-    @Test
     public void shouldCalculateFivePercentBaseMarkupForNormalItem() {
         Order normalOrder = new Order(INITIAL_AMOUNT, 0, "boxes");
 
@@ -97,6 +67,38 @@ public class MarkupCalculatorTest {
         BigDecimal markedUpAmount = markupCalculator.calculateMarkedUpCostFor(orderWithElectronics);
 
         assertAdditionalMarkupOf("1.02", INITIAL_AMOUNT, markedUpAmount);
+    }
+
+    // The following tests are completely for documenting the Nulogy test cases provided in the instructions, the above
+    //  tests should cover all the functionality and general documentation we care about
+    @Test
+    public void shouldCalculateCorrectMarkedUpAmountForNulogyExample1() {
+        Order order = new Order(new BigDecimal("1299.99"), 3, "food");
+
+        BigDecimal markedUpAmount = markupCalculator.calculateMarkedUpCostFor(order);
+
+        BigDecimal expectedAmount = new BigDecimal("1591.58");
+        assertThat(markedUpAmount.compareTo(expectedAmount), is(0));
+    }
+
+    @Test
+    public void shouldCalculateCorrectMarkedUpAmountForNulogyExample2() {
+        Order order = new Order(new BigDecimal("12456.95"), 4, "books");
+
+        BigDecimal markedUpAmount = markupCalculator.calculateMarkedUpCostFor(order);
+
+        BigDecimal expectedAmount = new BigDecimal("13707.63");
+        assertThat(markedUpAmount.compareTo(expectedAmount), is(0));
+    }
+
+    @Test
+    public void shouldCalculateCorrectMarkedUpAmountForNulogyExample3() {
+        Order order = new Order(new BigDecimal("5432.00"), 1, "drugs");
+
+        BigDecimal markedUpAmount = markupCalculator.calculateMarkedUpCostFor(order);
+
+        BigDecimal expectedAmount = new BigDecimal("6199.81");
+        assertThat(markedUpAmount.compareTo(expectedAmount), is(0));
     }
 
     // since markedUpAmount = initialAmount * baseMarkup * additionalMarkup,
